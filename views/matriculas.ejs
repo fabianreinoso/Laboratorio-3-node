@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Matrículas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Sistema de Matrículas</h1>
+        <hr>
+        <h3>Seleccione un curso:</h3>
+        <form action="/confirmacion" method="post">
+            <div class="form-group">
+                <label for="curso">Curso:</label>
+                <select class="form-control" id="curso" name="curso">
+                    <option value="Java" data-precio="1200">Java - S/ 1200</option>
+                    <option value="PHP" data-precio="800">PHP - S/ 800</option>
+                    <option value=".NET" data-precio="1500">.NET - S/ 1500</option>
+                </select>
+            </div>
+
+            <h3>Seleccione los módulos que llevará:</h3>
+<div class="form-check">
+    <input type="checkbox" class="form-check-input" id="moduloBasico" name="modulos" value="Básico">
+    <label class="form-check-label" for="moduloBasico">Básico</label>
+</div>
+<div class="form-check">
+    <input type="checkbox" class="form-check-input" id="moduloIntermedio" name="modulos" value="Intermedio">
+    <label class="form-check-label" for="moduloIntermedio">Intermedio</label>
+</div>
+<div class="form-check">
+    <input type="checkbox" class="form-check-input" id="moduloAvanzado" name="modulos" value="Avanzado">
+    <label class="form-check-label" for="moduloAvanzado">Avanzado</label>
+</div>
+
+            <h3>Seleccione un medio de pago:</h3>
+            <div class="form-group">
+                <label>Medios de pago disponibles:</label>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="pagoTarjeta" name="medioPago" value="Tarjeta de crédito">
+                    <label class="form-check-label" for="pagoTarjeta">Tarjeta de crédito</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="pagoEfectivo" name="medioPago" value="Pago en efectivo">
+                    <label class="form-check-label" for="pagoEfectivo">Pago en efectivo (se aplica 10% de descuento)</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Total a pagar:</label>
+                <span id="totalPagar">$200</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Confirmar Matrícula</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const cursoSelect = document.getElementById("curso");
+            const medioPagoRadios = document.querySelectorAll('input[name="medioPago"]');
+            const totalPagar = document.getElementById("totalPagar");
+        
+            // Función para calcular el precio total
+            function calcularPrecioTotal() {
+                const selectedCurso = cursoSelect.options[cursoSelect.selectedIndex];
+                const precioCurso = parseFloat(selectedCurso.getAttribute("data-precio"));
+        
+                let descuento = 0;
+                if (medioPagoRadios[1].checked) { // "Pago en efectivo" seleccionado
+                    descuento = precioCurso * 0.1; // 10% de descuento
+                }
+        
+                const precioTotal = precioCurso - descuento;
+                totalPagar.textContent = "$" + precioTotal.toFixed(2);
+            }
+        
+            // Escuchar cambios en el curso y medio de pago
+            cursoSelect.addEventListener("change", calcularPrecioTotal);
+            medioPagoRadios.forEach(function (radio) {
+                radio.addEventListener("change", calcularPrecioTotal);
+            });
+        
+            // Calcular el precio total inicialmente
+            calcularPrecioTotal();
+        });
+        </script>
+
+</body>
+</html>
